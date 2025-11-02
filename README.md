@@ -214,5 +214,3 @@ This project demonstrates:
 * Correctness verified by automated unit tests.
 * Performance efficiency and modular Java design.
 
-💡 *Final Score Expectation:* 100/100 ✅
-*All tasks completed, tested, and documented.*
