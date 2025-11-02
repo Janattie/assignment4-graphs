@@ -6,7 +6,7 @@ It covers all core algorithms required in the assignment — **SCC detection**, 
 
 ---
 
-## 🎯 Objectives
+##  Objectives
 
 The goal of this assignment is to:
 
@@ -22,32 +22,32 @@ All algorithms are implemented **from scratch**, following modular and object-or
 
 ---
 
-## 🧠 Algorithm Implementation Details
+##  Algorithm Implementation Details
 
-### 🧩 Tarjan’s SCC — `graph/scc/TarjanSCC.java`
+###  Tarjan’s SCC — `graph/scc/TarjanSCC.java`
 - Based on depth-first search (DFS).
 - Uses discovery time and low-link values to find SCCs.
 - Runs in **O(V + E)** time.
 
-### 🧩 Condensation Graph — `graph/model/Graph.java`
+###  Condensation Graph — `graph/model/Graph.java`
 - Converts SCCs into single DAG nodes.
 - Removes duplicate edges between components.
 - Builds an acyclic graph suitable for further analysis.
 
-### 🧩 Topological Sort — `graph/topo/TopologicalSort.java`
+###  Topological Sort — `graph/topo/TopologicalSort.java`
 - Implements **Kahn’s Algorithm** using indegree counting and queue operations.
 - Produces a valid topological order for DAG nodes.
 
-### 🧩 DAG Shortest Paths — `graph/dagsp/DagShortestPaths.java`
+###  DAG Shortest Paths — `graph/dagsp/DagShortestPaths.java`
 - Dynamic programming approach using topological order.
 - Computes shortest distances from a given source.
 - Each vertex is relaxed once — **O(V + E)**.
 
-### 🧩 DAG Longest Path — `graph/dagsp/DagLongestPath.java`
+###  DAG Longest Path — `graph/dagsp/DagLongestPath.java`
 - Similar DP logic but with reversed comparison (`max` instead of `min`).
 - Finds the **critical path length** and reconstructs the path sequence.
 
-### 🧩 Metrics — `util/Metrics.java`
+###  Metrics — `util/Metrics.java`
 - Tracks:
   - DFS visits / DFS edges  
   - Kahn’s queue pushes and pops  
@@ -57,7 +57,7 @@ All algorithms are implemented **from scratch**, following modular and object-or
 
 ---
 
-## 🧩 Project Structure
+##  Project Structure
 ```
 
 assignment4/
@@ -94,7 +94,7 @@ assignment4/
 
 
 
-## 🧾 Example Output
+##  Example Output
 
 ```
 SCC components:
@@ -117,7 +117,7 @@ Path (component ids): [5, 4, 3, 2]
 
 ---
 
-## 🧪 Testing
+##  Testing
 
 ### Framework: **JUnit 5**
 
@@ -136,7 +136,7 @@ Right-click `test/java/graph` → **Run Tests in 'graph'**
 
 ---
 
-## 📊 Performance Metrics
+##  Performance Metrics
 
 | Metric                | Description                                    |
 | --------------------- | ---------------------------------------------- |
@@ -150,7 +150,7 @@ All collected and printed in formatted output.
 
 ---
 
-## 📁 Dataset Description
+##  Dataset Description
 
 The `/data/` directory contains 10 datasets:
 
@@ -163,7 +163,7 @@ The `/data/` directory contains 10 datasets:
 
 ---
 
-## 🧩 Dependencies
+##  Dependencies
 
 | Library   | Version | Purpose                |
 | --------- | ------- | ---------------------- |
@@ -172,7 +172,7 @@ The `/data/` directory contains 10 datasets:
 
 ---
 
-## 🧠 Key Design Features
+##  Key Design Features
 
 * Modular architecture with clear package separation
 * Generic graph model supporting weights
@@ -182,15 +182,15 @@ The `/data/` directory contains 10 datasets:
 
 ---
 
-## 🧾 Results Summary
+##  Results Summary
 
 | Stage            | Algorithm   | Complexity | Status   |
 | ---------------- | ----------- | ---------- | -------- |
-| SCC Detection    | Tarjan      | O(V + E)   | ✅ Passed |
-| Condensation     | DAG Builder | O(V + E)   | ✅ Passed |
-| Topological Sort | Kahn        | O(V + E)   | ✅ Passed |
-| Shortest Path    | DAG DP      | O(V + E)   | ✅ Passed |
-| Longest Path     | DAG DP      | O(V + E)   | ✅ Passed |
+| SCC Detection    | Tarjan      | O(V + E)   |  Passed |
+| Condensation     | DAG Builder | O(V + E)   |  Passed |
+| Topological Sort | Kahn        | O(V + E)   |  Passed |
+| Shortest Path    | DAG DP      | O(V + E)   |  Passed |
+| Longest Path     | DAG DP      | O(V + E)   |  Passed |
 
 ✅ **All algorithms work as expected.**
 
