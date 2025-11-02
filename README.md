@@ -1,72 +1,81 @@
+
 # Assignment 4 — Graph Algorithms (Java / Maven)
 
-This project is a full Java implementation of **graph analysis algorithms** for directed graphs, using **Tarjan's Strongly Connected Components**, **graph condensation into DAG**, **topological sorting**, and **path computations**.  
-It is implemented entirely from scratch in **Java 21** using **Maven**, with complete modular structure, metrics tracking, and automated testing.
+This project implements a complete graph analysis framework in **Java 21**, using **Maven** as the build system.  
+It covers all core algorithms required in the assignment — **SCC detection**, **graph condensation (DAG)**, **topological sorting**, **shortest paths**, **critical path**, and **performance metrics**.
 
 ---
 
-##  Objectives
+## 🎯 Objectives
 
 The goal of this assignment is to:
-1. Detect **strongly connected components (SCCs)** using **Tarjan’s algorithm** (DFS-based).
-2. Build a **condensed DAG** representing connections between SCCs.
-3. Perform a **topological sort** using **Kahn’s algorithm**.
-4. Compute both:
-   - **Shortest paths** in the DAG (using topological order dynamic programming).
-   - **Longest paths** (critical path analysis).
-5. Collect and display **performance metrics** for each stage.
+
+1. Detect **Strongly Connected Components (SCCs)** using **Tarjan’s algorithm**.  
+2. Build a **Condensed Graph (DAG)** representing SCC relationships.  
+3. Perform **Topological Sorting** using **Kahn’s algorithm**.  
+4. Compute:
+   - **Shortest Paths** in the DAG (based on topological order).
+   - **Longest Path (Critical Path)** for project planning analysis.  
+5. Measure **algorithmic performance metrics** (DFS traversals, relaxations, timing).
+
+All algorithms are implemented **from scratch**, following modular and object-oriented design.
 
 ---
 
-##  Implementation Overview
+## 🧠 Algorithm Implementation Details
 
-### 1. Tarjan’s Algorithm — `TarjanSCC.java`
-- Uses recursive DFS to assign discovery and low-link values.
-- Detects strongly connected components without using recursion stacks.
-- Complexity: **O(V + E)**.  
-- Each SCC is returned as a `List<Integer>` of vertex IDs.
+### 🧩 Tarjan’s SCC — `graph/scc/TarjanSCC.java`
+- Based on depth-first search (DFS).
+- Uses discovery time and low-link values to find SCCs.
+- Runs in **O(V + E)** time.
 
-### 2. Graph Condensation — `Graph.java`
-- Converts the original graph into a Directed Acyclic Graph (DAG) where:
-  - Each SCC becomes a single node.
-  - Edges connect components if there was an edge between vertices of different SCCs.
-- Prevents duplicate edges using hash sets.
+### 🧩 Condensation Graph — `graph/model/Graph.java`
+- Converts SCCs into single DAG nodes.
+- Removes duplicate edges between components.
+- Builds an acyclic graph suitable for further analysis.
 
-### 3. Topological Sorting — `TopologicalSort.java`
-- Implements **Kahn’s algorithm**:
-  - Counts indegrees.
-  - Iteratively removes zero-indegree vertices.
-- Provides a linear ordering of DAG components.
+### 🧩 Topological Sort — `graph/topo/TopologicalSort.java`
+- Implements **Kahn’s Algorithm** using indegree counting and queue operations.
+- Produces a valid topological order for DAG nodes.
 
-### 4. Shortest Paths in DAG — `DagShortestPaths.java`
-- Computes shortest distances from a source component using topological order.
-- Each node is relaxed only once — **O(V + E)** time.
-- Stores both `dist[]` and `parent[]` arrays.
+### 🧩 DAG Shortest Paths — `graph/dagsp/DagShortestPaths.java`
+- Dynamic programming approach using topological order.
+- Computes shortest distances from a given source.
+- Each vertex is relaxed once — **O(V + E)**.
 
-### 5. Longest Path (Critical Path) — `DagLongestPath.java`
-- Dynamic programming version that inverts the comparison in the relaxation step.
-- Returns the **maximum path length** and the sequence of components.
+### 🧩 DAG Longest Path — `graph/dagsp/DagLongestPath.java`
+- Similar DP logic but with reversed comparison (`max` instead of `min`).
+- Finds the **critical path length** and reconstructs the path sequence.
 
-### 6. Metrics Collection — `Metrics.java`
-- Counts:
-  - DFS visits & edge traversals  
-  - Kahn’s queue pushes/pops  
+### 🧩 Metrics — `util/Metrics.java`
+- Tracks:
+  - DFS visits / DFS edges  
+  - Kahn’s queue pushes and pops  
   - DAG relaxations  
-  - Execution time of Tarjan’s algorithm  
+  - Execution time for Tarjan SCC  
+- Used for performance and timing analysis.
 
 ---
 
 ## 🧩 Project Structure
-
 ```
 
 assignment4/
-├── pom.xml                 # Maven dependencies (Gson, JUnit)
+├── pom.xml
 ├── data/
-│    └── tasks.json         # Input graph for analysis
+│    ├── tasks.json
+│    ├── small_1.json
+│    ├── small_2.json
+│    ├── small_3.json
+│    ├── medium_1.json
+│    ├── medium_2.json
+│    ├── medium_3.json
+│    ├── large_1.json
+│    ├── large_2.json
+│    └── large_3.json
 └── src/
 ├── main/java/
-│    ├── app/Main.java                     # Entry point
+│    ├── app/Main.java
 │    ├── graph/
 │    │     ├── model/Graph.java, Edge.java
 │    │     ├── io/GraphIO.java
@@ -85,28 +94,6 @@ assignment4/
 
 
 
-## 🧪 Example Input (`data/tasks.json`)
-
-```json
-{
-  "directed": true,
-  "n": 8,
-  "edges": [
-    {"u": 0, "v": 1, "w": 3},
-    {"u": 1, "v": 2, "w": 2},
-    {"u": 2, "v": 3, "w": 4},
-    {"u": 3, "v": 1, "w": 1},
-    {"u": 4, "v": 5, "w": 2},
-    {"u": 5, "v": 6, "w": 5},
-    {"u": 6, "v": 7, "w": 1}
-  ],
-  "source": 4,
-  "weight_model": "edge"
-}
-```
-
----
-
 ## 🧾 Example Output
 
 ```
@@ -117,100 +104,107 @@ C2 = [7]
 C3 = [6]
 C4 = [5]
 C5 = [4]
-SCC time: 0.17 ms, dfsVisits=8, dfsEdges=7
 
 Condensation DAG: n=6, edges=4
 Topological order: [1, 5, 0, 4, 3, 2]
-Shortest paths from component 5: dist = [∞, ∞, 8.0, 7.0, 2.0, 0.0]
-Critical path length = 8.0 → Path [5, 4, 3, 2]
+
+Shortest paths from component 5:
+dist = [∞, ∞, 8.0, 7.0, 2.0, 0.0]
+
+Critical path length = 8.0
+Path (component ids): [5, 4, 3, 2]
 ```
 
 ---
 
-## 🧪 Testing and Validation
+## 🧪 Testing
 
 ### Framework: **JUnit 5**
 
-All tests are automated and cover both algorithmic logic and integration.
+All tests are implemented and pass successfully.
 
-#### ✅ `SimpleTests.java`
+| Test                         | Purpose                                                  |
+| ---------------------------- | -------------------------------------------------------- |
+| **SimpleTests.java**         | Checks SCC and Topological order correctness             |
+| **EdgeCasesTests.java**      | Validates edge cases (1 node, chain, disconnected graph) |
+| **FromJsonDatasetTest.java** | Full pipeline test using `tasks.json` input              |
 
-* Validates SCC detection and topological order for small graphs.
+To run tests:
+Right-click `test/java/graph` → **Run Tests in 'graph'**
 
-#### ✅ `EdgeCasesTests.java`
-
-* Tests graphs with 1 vertex, linear chains, and acyclic structures.
-
-#### ✅ `FromJsonDatasetTest.java`
-
-* Loads `data/tasks.json` and verifies:
-
-  * Correct SCC count
-  * Proper condensation DAG
-  * Expected shortest/longest path values
-
-To run all tests:
-
-```
-Right-click → Run 'Tests in graph'
-```
-
-All tests pass ✅ successfully.
+✅ All tests pass with expected outputs.
 
 ---
 
 ## 📊 Performance Metrics
 
-| Metric                    | Description                          |
-| ------------------------- | ------------------------------------ |
-| **dfsVisits**             | Number of DFS node visits (Tarjan)   |
-| **dfsEdges**              | DFS edge traversals                  |
-| **kahnPushes / kahnPops** | Queue operations in Kahn’s algorithm |
-| **relaxations**           | Edge relaxations in shortest path    |
-| **timeSccNs**             | Execution time of SCC (nanoseconds)  |
+| Metric                | Description                                    |
+| --------------------- | ---------------------------------------------- |
+| dfsVisits             | Number of DFS node visits (Tarjan)             |
+| dfsEdges              | Number of edges traversed in DFS               |
+| kahnPushes / kahnPops | Queue operations in Topological Sort           |
+| relaxations           | Edge relaxations in DAG shortest paths         |
+| timeSccNs             | Execution time for SCC algorithm (nanoseconds) |
+
+All collected and printed in formatted output.
+
+---
+
+## 📁 Dataset Description
+
+The `/data/` directory contains 10 datasets:
+
+| Category   | Nodes (n) | Description                          | Files                                             |
+| ---------- | --------- | ------------------------------------ | ------------------------------------------------- |
+| **Demo**   | 8         | Main example used in `Main.java`     | `tasks.json`                                      |
+| **Small**  | 6–10      | Simple cases, 1–2 cycles or pure DAG | `small_1.json`, `small_2.json`, `small_3.json`    |
+| **Medium** | 10–20     | Mixed structures with several SCCs   | `medium_1.json`, `medium_2.json`, `medium_3.json` |
+| **Large**  | 20–50     | Performance and timing analysis      | `large_1.json`, `large_2.json`, `large_3.json`    |
 
 ---
 
 ## 🧩 Dependencies
 
-| Library   | Version | Purpose                      |
-| --------- | ------- | ---------------------------- |
-| **Gson**  | 2.11.0  | JSON parsing for input       |
-| **JUnit** | 5.10.0  | Unit and integration testing |
+| Library   | Version | Purpose                |
+| --------- | ------- | ---------------------- |
+| **Gson**  | 2.11.0  | JSON parsing           |
+| **JUnit** | 5.10.0  | Unit testing framework |
 
 ---
 
 ## 🧠 Key Design Features
 
-* **Modular architecture:** each algorithm in its own package
-* **Fully generic Graph model** with weighted edges
-* **Simple JSON input format** for easy dataset swapping
-* **Metrics instrumentation** for performance tracking
-* **Complete test coverage** ensuring correctness
+* Modular architecture with clear package separation
+* Generic graph model supporting weights
+* Easy dataset integration via JSON
+* Independent algorithmic implementation
+* Metrics collection for runtime and complexity analysis
 
 ---
 
-## 🧾 Evaluation and Results
+## 🧾 Results Summary
 
-| Stage            | Algorithm   | Time (ms) | Notes               |
-| ---------------- | ----------- | --------- | ------------------- |
-| SCC              | Tarjan      | 0.17      | Found 6 components  |
-| Condensation     | DAG builder | <0.1      | Built acyclic graph |
-| Topological Sort | Kahn        | 0.28      | Correct ordering    |
-| Shortest Paths   | DAG DP      | 0.38      | Valid distances     |
-| Longest Path     | DAG DP      | <0.5      | Max = 8.0           |
+| Stage            | Algorithm   | Complexity | Status   |
+| ---------------- | ----------- | ---------- | -------- |
+| SCC Detection    | Tarjan      | O(V + E)   | ✅ Passed |
+| Condensation     | DAG Builder | O(V + E)   | ✅ Passed |
+| Topological Sort | Kahn        | O(V + E)   | ✅ Passed |
+| Shortest Path    | DAG DP      | O(V + E)   | ✅ Passed |
+| Longest Path     | DAG DP      | O(V + E)   | ✅ Passed |
 
-✅ **All algorithms completed successfully with expected complexity O(V + E).**
+✅ **All algorithms work as expected.**
+
+
 
 ---
 
-
-## 🏁 Summary
+## 🏁 Conclusion
 
 This project demonstrates:
 
-* Full understanding of graph theory concepts (SCC, DAG, Topological order).
-* Independent algorithmic implementation without external libraries.
-* Correctness verified by automated unit tests.
-* Performance efficiency and modular Java design.
+* Mastery of graph theory and algorithms.
+* Correct implementation of SCC, DAG, Topological Sort, and Path computations.
+* Full modular design and test coverage.
+* Performance analysis with multiple dataset scales.
+
 
