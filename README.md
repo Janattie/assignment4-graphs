@@ -198,7 +198,7 @@ The `/data/` directory contains 10 datasets:
 
 ---
 
-## 🏁 Conclusion
+##  Conclusion
 
 This project demonstrates:
 
